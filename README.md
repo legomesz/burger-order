@@ -2,7 +2,7 @@
 
 ## Sobre o Projeto
 
-O Burger Order é uma API REST desenvolvida para gerenciamento de pedidos de uma hamburgueria.
+O Burger Order é uma API REST desenvolvida para gerenciamento de pedidos de uma hamburgueria.  
 O sistema permite cadastrar usuários, produtos e pedidos, além de controlar o status dos pedidos realizados.
 
 O projeto foi desenvolvido utilizando Java com Spring Boot e PostgreSQL, com o banco de dados hospedado na plataforma Neon.
@@ -136,7 +136,111 @@ DELETE /v1/orders/{id}
 
 ---
 
-# Exemplo de JSON para criação de pedido
+# Exemplos de Requisição
+
+# Usuários
+
+## Criar usuário
+
+```http
+POST /v1/users
+```
+
+```json
+{
+  "name": "Leonardo",
+  "email": "leo@email.com",
+  "password": "23092002"
+}
+```
+
+---
+
+## Listar usuários
+
+```http
+GET /v1/users
+```
+
+Resposta:
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Leonardo",
+    "email": "leo@email.com",
+    "password": "23092002"
+  }
+]
+```
+
+---
+
+## Atualizar usuário
+
+```http
+PUT /v1/users/1
+```
+
+```json
+{
+  "name": "Leonardo Gomes",
+  "email": "leogomes@email.com",
+  "password": "123456"
+}
+```
+
+---
+
+# Produtos
+
+## Criar produto
+
+```http
+POST /v1/products
+```
+
+```json
+{
+  "name": "X Bacon",
+  "price": 25.90,
+  "description": "Hamburguer com bacon",
+  "stock": 10
+}
+```
+
+---
+
+## Listar produtos
+
+```http
+GET /v1/products
+```
+
+Resposta:
+
+```json
+[
+  {
+    "id": 1,
+    "name": "X Bacon",
+    "price": 25.90,
+    "description": "Hamburguer com bacon",
+    "stock": 10
+  }
+]
+```
+
+---
+
+# Pedidos
+
+## Criar pedido
+
+```http
+POST /v1/orders
+```
 
 ```json
 {
@@ -152,6 +256,74 @@ DELETE /v1/orders/{id}
     }
   ]
 }
+```
+
+---
+
+## Listar pedidos
+
+```http
+GET /v1/orders
+```
+
+Resposta:
+
+```json
+[
+  {
+    "id": 1,
+    "userId": 1,
+    "total": 77.7,
+    "status": "PENDENTE"
+  }
+]
+```
+
+---
+
+## Buscar pedido por ID
+
+```http
+GET /v1/orders/1
+```
+
+Resposta:
+
+```json
+{
+  "id": 1,
+  "userId": 1,
+  "total": 77.7,
+  "status": "PENDENTE"
+}
+```
+
+---
+
+## Atualizar status do pedido
+
+```http
+PATCH /v1/orders/1/status
+```
+
+```json
+{
+  "status": "PREPARANDO"
+}
+```
+
+---
+
+## Deletar pedido
+
+```http
+DELETE /v1/orders/1
+```
+
+Resposta:
+
+```text
+Pedido deletado com sucesso
 ```
 
 ---
@@ -211,7 +383,7 @@ O sistema teve como objetivo aplicar conceitos de:
 * Integração com banco de dados
 * Organização em camadas
 * Versionamento com GitHub
-* Desenvolvimento Back-End com Spring Boot
+* Desenvolvimento Back-End
 
 ---
 
