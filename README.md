@@ -2,10 +2,20 @@
 
 ## Sobre o Projeto
 
-O Burger Order é uma API REST desenvolvida para gerenciamento de pedidos de uma hamburgueria.  
-O sistema permite cadastrar usuários, produtos e pedidos, além de controlar o status dos pedidos realizados.
+O **Burger Order** é uma API REST desenvolvida para gerenciamento de pedidos de uma hamburgueria.
 
-O projeto foi desenvolvido utilizando Java com Spring Boot e PostgreSQL, com o banco de dados hospedado na plataforma Neon.
+O sistema permite:
+
+* cadastro de usuários
+* cadastro de produtos
+* criação de pedidos
+* consulta de pedidos
+* atualização de status
+* exclusão de registros
+
+O projeto foi desenvolvido com **Java + Spring Boot**, utilizando **PostgreSQL** como banco de dados, hospedado na plataforma **Neon Database**.
+
+Além disso, o sistema foi ajustado para exibir o **nome dos produtos dentro dos pedidos**, tornando as respostas da API mais intuitivas e próximas de um cenário real.
 
 ---
 
@@ -34,17 +44,19 @@ src/main/java/com/burgerorder/burgerorder
 └── BurgerOrderApplication.java
 ```
 
-## Camadas
+---
 
-### Controller
+# Arquitetura em Camadas
 
-Responsável pelos endpoints da API.
+## Controller
 
-### Model
+Responsável pelos endpoints da API e pelo recebimento das requisições HTTP.
+
+## Model
 
 Representação das entidades do sistema.
 
-### Repository
+## Repository
 
 Responsável pela comunicação com o banco de dados.
 
@@ -52,91 +64,20 @@ Responsável pela comunicação com o banco de dados.
 
 # Funcionalidades
 
-* Cadastro de usuários
-* Cadastro de produtos
-* Criação de pedidos
-* Atualização de status do pedido
-* Consulta de pedidos
-* Integração com banco PostgreSQL
-* API REST completa
+✅ Cadastro de usuários
+✅ Cadastro de produtos
+✅ Criação de pedidos
+✅ Consulta de pedidos
+✅ Atualização parcial ou total de usuários
+✅ Atualização de status do pedido
+✅ Exclusão de registros
+✅ Integração com PostgreSQL
+✅ Exibição do nome dos produtos nos pedidos
+✅ API REST completa
 
 ---
 
-# Endpoints Principais
-
-## Usuários
-
-### Criar usuário
-
-```http
-POST /v1/users
-```
-
-### Listar usuários
-
-```http
-GET /v1/users
-```
-
-### Atualizar usuário
-
-```http
-PUT /v1/users/{id}
-```
-
----
-
-## Produtos
-
-### Criar produto
-
-```http
-POST /v1/products
-```
-
-### Listar produtos
-
-```http
-GET /v1/products
-```
-
----
-
-## Pedidos
-
-### Criar pedido
-
-```http
-POST /v1/orders
-```
-
-### Listar pedidos
-
-```http
-GET /v1/orders
-```
-
-### Buscar pedido por ID
-
-```http
-GET /v1/orders/{id}
-```
-
-### Atualizar status do pedido
-
-```http
-PATCH /v1/orders/{id}/status
-```
-
-### Deletar pedido
-
-```http
-DELETE /v1/orders/{id}
-```
-
----
-
-# Exemplos de Requisição
+# Endpoints
 
 # Usuários
 
@@ -145,6 +86,8 @@ DELETE /v1/orders/{id}
 ```http
 POST /v1/users
 ```
+
+Exemplo:
 
 ```json
 {
@@ -177,11 +120,21 @@ Resposta:
 
 ---
 
-## Atualizar usuário
+## Buscar usuário por ID
+
+```http
+GET /v1/users/1
+```
+
+---
+
+## Atualizar usuário (total ou parcial)
 
 ```http
 PUT /v1/users/1
 ```
+
+Atualização completa:
 
 ```json
 {
@@ -189,6 +142,22 @@ PUT /v1/users/1
   "email": "leogomes@email.com",
   "password": "123456"
 }
+```
+
+Atualização parcial:
+
+```json
+{
+  "password": "novaSenha123"
+}
+```
+
+---
+
+## Deletar usuário
+
+```http
+DELETE /v1/users/1
 ```
 
 ---
@@ -205,8 +174,7 @@ POST /v1/products
 {
   "name": "X Bacon",
   "price": 25.90,
-  "description": "Hamburguer com bacon",
-  "stock": 10
+  "description": "Hambúrguer artesanal com bacon"
 }
 ```
 
@@ -226,10 +194,41 @@ Resposta:
     "id": 1,
     "name": "X Bacon",
     "price": 25.90,
-    "description": "Hamburguer com bacon",
-    "stock": 10
+    "description": "Hambúrguer artesanal com bacon"
   }
 ]
+```
+
+---
+
+## Buscar produto por ID
+
+```http
+GET /v1/products/1
+```
+
+---
+
+## Atualizar produto
+
+```http
+PUT /v1/products/1
+```
+
+```json
+{
+  "name": "X Bacon Especial",
+  "price": 29.90,
+  "description": "Versão especial"
+}
+```
+
+---
+
+## Deletar produto
+
+```http
+DELETE /v1/products/1
 ```
 
 ---
@@ -274,7 +273,17 @@ Resposta:
     "id": 1,
     "userId": 1,
     "total": 77.7,
-    "status": "PENDENTE"
+    "status": "PENDENTE",
+    "items": [
+      {
+        "productName": "X Bacon",
+        "quantity": 2
+      },
+      {
+        "productName": "Batata Frita",
+        "quantity": 1
+      }
+    ]
   }
 ]
 ```
@@ -285,17 +294,6 @@ Resposta:
 
 ```http
 GET /v1/orders/1
-```
-
-Resposta:
-
-```json
-{
-  "id": 1,
-  "userId": 1,
-  "total": 77.7,
-  "status": "PENDENTE"
-}
 ```
 
 ---
@@ -320,17 +318,11 @@ PATCH /v1/orders/1/status
 DELETE /v1/orders/1
 ```
 
-Resposta:
-
-```text
-Pedido deletado com sucesso
-```
-
 ---
 
 # Como Executar o Projeto
 
-## 1. Clonar o repositório
+## 1. Clonar repositório
 
 ```bash
 git clone https://github.com/legomesz/burger-order.git
@@ -340,11 +332,11 @@ git clone https://github.com/legomesz/burger-order.git
 
 ## 2. Abrir no IntelliJ IDEA
 
-Abrir a pasta do projeto no IntelliJ IDEA.
+Abrir a pasta do projeto.
 
 ---
 
-## 3. Configurar banco de dados
+## 3. Configurar banco
 
 Arquivo:
 
@@ -364,29 +356,45 @@ spring.datasource.password=...
 
 ## 4. Executar aplicação
 
-Rodar a classe:
+Rodar:
 
 ```text
 BurgerOrderApplication.java
 ```
 
+ou pelo terminal:
+
+```bash
+./mvnw spring-boot:run
+```
+
+---
+
+# Testes
+
+Os endpoints foram testados utilizando **Postman**, com execução validada em:
+
+* Windows
+* macOS
+
 ---
 
 # Objetivo Acadêmico
 
-O projeto foi desenvolvido para fins acadêmicos na disciplina de Back-End, ministrada pelo professor João Martins.
+Projeto desenvolvido para a disciplina de **Back-End**, ministrada pelo professor **João Martins**.
 
-O sistema teve como objetivo aplicar conceitos de:
+Conceitos aplicados:
 
 * API REST
 * CRUD
 * Integração com banco de dados
 * Organização em camadas
-* Versionamento com GitHub
-* Desenvolvimento Back-End
+* Versionamento com Git/GitHub
+* Persistência com JPA/Hibernate
+* Desenvolvimento backend com Spring Boot
 
 ---
 
 # Autor
 
-Leonardo Gomes
+**Leonardo Gomes**
