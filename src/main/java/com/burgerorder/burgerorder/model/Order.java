@@ -22,7 +22,7 @@ public class Order {
     @Column(name = "product_id")
     private List<Long> productIds;
 
-    @Transient
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items;
 
     public Order() {
@@ -41,44 +41,44 @@ public class Order {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Long getUserId() {
         return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public Double getTotal() {
         return total;
     }
 
-    public void setTotal(Double total) {
-        this.total = total;
-    }
-
     public OrderStatus getStatus() {
         return status;
-    }
-
-    public void setStatus(OrderStatus status) {
-        this.status = status;
     }
 
     public List<Long> getProductIds() {
         return productIds;
     }
 
-    public void setProductIds(List<Long> productIds) {
-        this.productIds = productIds;
-    }
-
     public List<OrderItem> getItems() {
         return items;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+
+    public void setProductIds(List<Long> productIds) {
+        this.productIds = productIds;
     }
 
     public void setItems(List<OrderItem> items) {

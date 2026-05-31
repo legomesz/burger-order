@@ -40,6 +40,9 @@ public class OrderController {
 
             total += product.getPrice() * quantity;
             productIds.add(item.getProductId());
+
+            item.setProductName(product.getName());
+            item.setOrder(order);
         }
 
         order.setProductIds(productIds);
@@ -49,10 +52,7 @@ public class OrderController {
             order.setStatus(OrderStatus.PENDENTE);
         }
 
-        Order savedOrder = orderRepository.save(order);
-        savedOrder.setItems(order.getItems());
-
-        return savedOrder;
+        return orderRepository.save(order);
     }
 
     @GetMapping
@@ -71,16 +71,9 @@ public class OrderController {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
 
-        if (updatedOrder.getStatus() == null) {
-            throw new RuntimeException("Status não informado");
-        }
-
         order.setStatus(updatedOrder.getStatus());
 
-        Order savedOrder = orderRepository.save(order);
-        savedOrder.setItems(order.getItems());
-
-        return savedOrder;
+        return orderRepository.save(order);
     }
 
     @DeleteMapping("/{id}")
@@ -89,6 +82,7 @@ public class OrderController {
                 .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
 
         orderRepository.delete(order);
+
         return "Pedido deletado com sucesso";
     }
 }

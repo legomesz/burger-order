@@ -35,10 +35,17 @@ public class ProductController {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
-        product.setName(updatedProduct.getName());
-        product.setPrice(updatedProduct.getPrice());
-        product.setDescription(updatedProduct.getDescription());
-        product.setStock(updatedProduct.getStock());
+        if (updatedProduct.getName() != null) {
+            product.setName(updatedProduct.getName());
+        }
+
+        if (updatedProduct.getPrice() != null) {
+            product.setPrice(updatedProduct.getPrice());
+        }
+
+        if (updatedProduct.getDescription() != null) {
+            product.setDescription(updatedProduct.getDescription());
+        }
 
         return productRepository.save(product);
     }
